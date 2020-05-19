@@ -54,3 +54,73 @@
 
 (setq mac-option-modifier nil
       mac-command-modifier 'meta)
+
+(use-package! rx)
+(use-package! s)
+(use-package! org-datetree)
+
+(defvar pm/porg-directory)
+
+(setq pm/porg-directory "~/org/projects/")
+
+(setq pm/porg--file-regexp
+      (rx
+       (eval (expand-file-name pm/porg-directory))
+       (zero-or-one (and (group-n 2 (one-or-more (not (any "#.")))) "_"))
+       (group-n 1 (one-or-more (not (any "#.")))) ".org" eol))
+
+(defun pm/porg-meta-for-path (path)
+  (-zip-pair '(path project client)
+             (s-match pm/porg--file-regexp path)))
+
+(defun pm/porg-key-for-path (path key)
+  (->> path
+       pm/porg-meta-for-path
+       (alist-get key)))
+
+(defun pm/porg-project-metas ()
+  (->> (directory-files-recursively pm/porg-directory "")
+       (-map 'pm/porg-meta-for-path)
+       -non-nil))
+
+(defun pm/porg-project->metas ()
+  (let ((metas (pm/porg-project-metas)))
+    (-zip-pair (-map (-partial 'alist-get 'project) metas)
+               metas)))
+
+(defun pm/porg-meta-for-name (name)
+  (alist-get name (pm/porg-project->metas) nil nil 'equal))
+
+(defun pm/porg-current-name ()
+  (let ((current-project (->> (pm/porg-meta-for-name (buffer-file-name))
+                              (alist-get 'project))))
+    (cond
+     (current-project current-project)
+     ((projectile-project-p) (projectile-project-name))
+     (t nil))))
+
+(defun pm/porg-current-file ()
+  (->> (pm/porg-meta-for-name (pm/porg-current-name))
+       (alist-get 'path)))
+
+(defun pm/porg-open-file ()
+  (interactive)
+  (when-let ((file (pm/porg-current-file)))
+    (find-file-other-window file)))
+
+(defun pm/porg--capture-templates-for (name)
+	(let ((file (alist-get 'path (pm/porg-meta-for-name name))))
+	  `(("j" "Log" entry (file+olp+datetree ,file "Log")
+	    "*** %<%H:%M> %?\n")
+	   ("k" "Logged task" entry (file+olp+datetree ,file "Log")
+	    "*** TODO %<%H:%M> %?\n" :clock-in t)
+	   ("l" "Task" entry (file+olp,file "Tasks")
+	    "*** TODO %t %?\n")
+	   ("m" "Note" entry (file+olp ,file "Notes")
+	    "** %t %?\n"))))
+
+(defun pm/porg-capture ()
+	(interactive)
+	(when-let (file (pm/porg-current-file))
+	  (let ((org-capture-templates (pm/porg--capture-templates-for (pm/porg-current-name))))
+	    (org-capture))))
