@@ -92,7 +92,7 @@
   (alist-get name (pm/porg-project->metas) nil nil 'equal))
 
 (defun pm/porg-current-name ()
-  (let ((current-project (->> (pm/porg-meta-for-name (buffer-file-name))
+  (let ((current-project (->> (pm/porg-meta-for-path (buffer-file-name))
                               (alist-get 'project))))
     (cond
      (current-project current-project)
