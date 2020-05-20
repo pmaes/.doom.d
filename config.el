@@ -132,3 +132,5 @@
   (map! :map pasp-mode-map
         :localleader
         "e" #'pasp-run-buffer))
+
+(+global-word-wrap-mode +1)
