@@ -47,3 +47,5 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 (package! rx)
 (package! s)
+
+(package! pasp-mode)

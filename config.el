@@ -124,3 +124,11 @@
 	(when-let (file (pm/porg-current-file))
 	  (let ((org-capture-templates (pm/porg--capture-templates-for (pm/porg-current-name))))
 	    (org-capture))))
+
+(use-package! pasp-mode
+  :mode "\\.lp$"
+  :defer t
+  :config
+  (map! :map pasp-mode-map
+        :localleader
+        "e" #'pasp-run-buffer))
