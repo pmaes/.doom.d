@@ -134,3 +134,7 @@
         "e" #'pasp-run-buffer))
 
 (+global-word-wrap-mode +1)
+
+(map! :leader
+      "n p" #'pm/porg-capture
+      "n P" #'pm/porg-open-file)
