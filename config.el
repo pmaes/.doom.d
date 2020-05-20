@@ -138,3 +138,5 @@
 (map! :leader
       "n p" #'pm/porg-capture
       "n P" #'pm/porg-open-file)
+
+(setq avy-all-windows t)
