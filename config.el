@@ -160,4 +160,13 @@
                              (:mixEnv "dev"
                                      :dialyzerEnabled
                                      :json-false))))
-             (lsp--set-configuration config)))))))
+               (lsp--set-configuration config)))))))
+
+(setq hl-todo-keyword-faces
+      '(("TODO" warning bold)
+        ("FIXME" error bold)
+        ("HACK" font-lock-constant-face bold)
+        ("REVIEW" font-lock-keyword-face bold)
+        ("NOTE" success bold)
+        ("NEXT" success bold)
+        ("DEPRECATED" font-lock-doc-face bold)))
