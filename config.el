@@ -140,3 +140,5 @@
       "n P" #'pm/porg-open-file)
 
 (setq avy-all-windows t)
+
+(setq global-auto-revert-mode t)
