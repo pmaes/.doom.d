@@ -114,6 +114,8 @@
 	    "*** %<%H:%M> %?\n")
 	   ("k" "Logged task" entry (file+olp+datetree ,file "Log")
 	    "*** TODO %<%H:%M> %?\n" :clock-in t)
+     ("n" "Next" entry (file+olp+datetree ,file "Log")
+	    "*** NEXT %?\n")
 	   ("l" "Task" entry (file+olp,file "Tasks")
 	    "*** TODO %t %?\n")
 	   ("m" "Note" entry (file+olp ,file "Notes")
