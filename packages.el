@@ -49,3 +49,4 @@
 (package! s)
 
 (package! pasp-mode)
+(package! frames-only-mode)

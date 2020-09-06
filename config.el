@@ -170,3 +170,6 @@
         ("NOTE" success bold)
         ("NEXT" success bold)
         ("DEPRECATED" font-lock-doc-face bold)))
+
+(use-package frames-only-mode
+  :config (frames-only-mode))
